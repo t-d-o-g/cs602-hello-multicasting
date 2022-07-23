@@ -38,10 +38,12 @@ public class MulticastSender {
 				multicastReceiverThread.interrupt();
 				packet = new DatagramPacket(msg.getBytes(), msg.length(), group, port);
 			}
+
 			System.out.println("Message: " + msgCount);
 			scan.close();
 			packet = new DatagramPacket(msg.getBytes(), msg.length(), group, port);
 			socket.send(packet);
+			socket.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
