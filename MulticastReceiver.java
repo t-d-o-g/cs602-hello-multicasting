@@ -7,7 +7,6 @@ public class MulticastReceiver implements Runnable {
 	private InetAddress group;
 	private int port;
 	private String msg;
-	private boolean quit = false;
 
 	public MulticastReceiver(InetAddress group, int port, String msg) {
 		this.group = group;
@@ -39,9 +38,5 @@ public class MulticastReceiver implements Runnable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	public void quit() {
-		quit = true;
 	}
 }
