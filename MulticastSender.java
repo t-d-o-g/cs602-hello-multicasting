@@ -21,8 +21,8 @@ public class MulticastSender {
 			group = InetAddress.getByName(groupIP);
 
 			DatagramPacket packet = new DatagramPacket(msg.getBytes(), msg.length(), group, port);
-			Thread recv = new Thread(new MulticastReceiver(group, port, msg));
-			recv.start();
+			Thread multicastReceiverThread = new Thread(new MulticastReceiver(group, port, msg));
+			multicastReceiverThread.start();
 			
 			socket = new MulticastSocket(port);
 			socket.setTimeToLive(32);
@@ -35,7 +35,7 @@ public class MulticastSender {
 				msg = "";
 				msg += scan.nextLine();
 				msgCount += 1;
-				recv.interrupt();
+				multicastReceiverThread.interrupt();
 				packet = new DatagramPacket(msg.getBytes(), msg.length(), group, port);
 			}
 			System.out.println("Message: " + msgCount);
