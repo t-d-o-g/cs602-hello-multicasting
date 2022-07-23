@@ -6,6 +6,8 @@ public class MulticastSender {
 	public static void main(String[] args) {
 		MulticastSocket s;
 		InetAddress group;
+		String groupIP = "239.1.2.3";
+		int port = 3456;
 		String msg;
 
 		try {
@@ -13,11 +15,15 @@ public class MulticastSender {
 				msg = "Hello! Multicasting.";
 			else
 				msg = args[0];
-			group = InetAddress.getByName("239.1.2.3");
-			s = new MulticastSocket(3456);
-			s.setTimeToLive(32);
+				
+			group = InetAddress.getByName(groupIP);
 
-			DatagramPacket packet = new DatagramPacket(msg.getBytes(), msg.length(), group, 3456);
+			DatagramPacket packet = new DatagramPacket(msg.getBytes(), msg.length(), group, port);
+			Thread recv = new Thread(new MulticastReceiver(group, port, msg));
+			recv.start();
+			
+			s = new MulticastSocket(port);
+			s.setTimeToLive(32);
 			s.send(packet);
 			s.close();
 		} catch (Exception e) {
