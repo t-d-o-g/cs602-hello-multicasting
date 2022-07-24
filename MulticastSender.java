@@ -9,38 +9,56 @@ public class MulticastSender {
 		InetAddress group;
 		String groupIP = "239.1.2.3";
 		int port = 3456;
-		String msg;
+		String msg = "Hello! Multicasting.";
+		int receiverCount = 1;
 		int msgCount = 1;
 
 		try {
-			if (args.length != 1)
-				msg = "Hello! Multicasting.";
-			else
-				msg = args[0];
-
 			group = InetAddress.getByName(groupIP);
 
 			DatagramPacket packet = new DatagramPacket(msg.getBytes(), msg.length(), group, port);
-			Thread multicastReceiverThread = new Thread(new MulticastReceiver(group, port, msg));
-			multicastReceiverThread.start();
+			
+			Scanner getReceiverCount = new Scanner(System.in);
+			System.out.println("How many multicast receivers should get your messages? Enter an integer value.");
+
+			try {
+				receiverCount = Integer.parseInt(getReceiverCount.nextLine());
+			} catch (Exception e) {
+				System.out.println("Please enter an integer value.");
+				receiverCount = Integer.parseInt(getReceiverCount.nextLine());
+			}
+
+			Thread[] threads = new Thread[receiverCount];
+			 
+			for (int i = 0; i < receiverCount; i++) {
+				threads[i] = new Thread(new MulticastReceiver(group, port, msg));
+				threads[i].start();
+			}
 			
 			socket = new MulticastSocket(port);
 			socket.setTimeToLive(32);
-			Scanner scan = new Scanner(System.in);
+			Scanner getMsg = new Scanner(System.in);
+			System.out.println("Enter messages to send to Multicast recievers. When you are done enter 'bye'.\n");
 
 			while (!msg.equals("bye")) {
 				System.out.println("Message: " + msgCount);
 
 				socket.send(packet);
 				msg = "";
-				msg += scan.nextLine();
+				msg += getMsg.nextLine();
 				msgCount += 1;
-				multicastReceiverThread.interrupt();
+				
+				for (int i = 0; i < receiverCount; i++) {
+					threads[i].interrupt();
+				}
+				
 				packet = new DatagramPacket(msg.getBytes(), msg.length(), group, port);
+
 			}
 
 			System.out.println("Message: " + msgCount);
-			scan.close();
+			getReceiverCount.close();
+			getMsg.close();
 			packet = new DatagramPacket(msg.getBytes(), msg.length(), group, port);
 			socket.send(packet);
 			socket.close();

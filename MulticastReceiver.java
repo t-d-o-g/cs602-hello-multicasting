@@ -19,19 +19,13 @@ public class MulticastReceiver implements Runnable {
 			MulticastSocket socket = new MulticastSocket(port);
 			socket.joinGroup(group);
 			
-			System.out.println("MulticastReceiver listening for messages. When you are done say bye.\n");
-
 			while (!msg.equals("bye")) {
 				byte[] data = new byte[MAX_LENGTH];
 				DatagramPacket packet = new DatagramPacket(data, data.length, group, port);
 				socket.receive(packet);
 				msg = new String(packet.getData()).trim();
 
-				System.out.println("Thread: " + Thread.currentThread().getName() + "\n");
-				System.out.println("Message: " + msg);
-				System.out.println("Multicast group IP: " + group);
-				System.out.println("Mutlicast group port: " + port);
-				System.out.println("Message length: " + msg.length() + "\n");
+				System.out.println(Thread.currentThread().getName() + "\n\tMessage: " + msg + "\n\tIP: " + group + "\n\tPort: " + port + "\n\tLength: " + msg.length() + "\n");
 		  }
 			socket.leaveGroup(group);
 			socket.close();
