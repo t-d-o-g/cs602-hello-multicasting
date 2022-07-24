@@ -19,7 +19,7 @@ public class MulticastSender {
 			DatagramPacket packet = new DatagramPacket(msg.getBytes(), msg.length(), group, port);
 			
 			Scanner getReceiverCount = new Scanner(System.in);
-			System.out.println("How many multicast receivers should get your messages? Enter an integer value.");
+			System.out.println("How many multicast receivers should receive your messages? Enter an integer value.");
 
 			try {
 				receiverCount = Integer.parseInt(getReceiverCount.nextLine());
@@ -38,7 +38,7 @@ public class MulticastSender {
 			socket = new MulticastSocket(port);
 			socket.setTimeToLive(32);
 			Scanner getMsg = new Scanner(System.in);
-			System.out.println("The first message has been sent. Enter more messages to send to Multicast recievers. When you are done enter 'bye'.\n");
+			System.out.println("The first message has been sent. Enter more messages to send to the multicast recievers. When you are done enter \"bye\".\n");
 
 			while (!msg.equals("bye")) {
 				System.out.println("Sending message " + msgCount + ": " + msg);
