@@ -38,11 +38,10 @@ public class MulticastSender {
 			socket = new MulticastSocket(port);
 			socket.setTimeToLive(32);
 			Scanner getMsg = new Scanner(System.in);
-			System.out.println("Enter messages to send to Multicast recievers. When you are done enter 'bye'.\n");
+			System.out.println("The first message has been sent. Enter more messages to send to Multicast recievers. When you are done enter 'bye'.\n");
 
 			while (!msg.equals("bye")) {
-				System.out.println("Message: " + msgCount);
-
+				System.out.println("Sending message " + msgCount + ": " + msg);
 				socket.send(packet);
 				msg = "";
 				msg += getMsg.nextLine();
@@ -56,7 +55,7 @@ public class MulticastSender {
 
 			}
 
-			System.out.println("Message: " + msgCount);
+			System.out.println("Sending message " + msgCount + ": " + msg);
 			getReceiverCount.close();
 			getMsg.close();
 			packet = new DatagramPacket(msg.getBytes(), msg.length(), group, port);

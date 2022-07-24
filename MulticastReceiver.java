@@ -25,7 +25,7 @@ public class MulticastReceiver implements Runnable {
 				socket.receive(packet);
 				msg = new String(packet.getData()).trim();
 
-				System.out.println("Multicast receiver " + Thread.currentThread().getName() + "\n\tMessage: " + msg + "\n\tIP: " + group + "\n\tPort: " + port + "\n\tLength: " + msg.length() + "\n");
+				System.out.println("Multicast receiver " + Thread.currentThread().getName() + "\n\tMessage Received: " + msg + "\n\tGroup IP: " + group + "\n\tGroup Port: " + port + "\n\tMessage Length: " + msg.length() + "\n");
 		  }
 			socket.leaveGroup(group);
 			socket.close();
